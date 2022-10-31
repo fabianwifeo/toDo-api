@@ -1,8 +1,10 @@
 const Task = require('../models/Task');
 
 exports.createTask = (req, res, next) => {
+    delete req.body._id
     const newTask = new Task({
-        task: req.body.task
+        task: req.body.task,
+        _id: req.body.id
     });
     newTask.save()
     .then(() => res.status(201).json({message: 'new task added'}))
@@ -16,7 +18,7 @@ exports.getAllTasks = (req, res, next) => {
 };
 
 exports.deleteOneTask = (req, res, next) => {
-    Task.deleteOne({_id: req.params.id})
+    Task.deleteOne({id: req.params.id})
     .then(() => res.status(200).json({message: 'task deleted'}))
     .catch((error) => res.status(400).json({error}))
 };
